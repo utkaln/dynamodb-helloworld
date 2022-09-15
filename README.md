@@ -1,0 +1,2 @@
+# dynamodb-helloworld
+learn dynamodb
