@@ -42,3 +42,17 @@ addNumbersPromise(50,'abc').then(
 
 // chaining promises
 console.log ("calling chaining promise method");
+addNumbersPromise(50,'abc').then(
+    (successCode) => {
+        console.log("First promise came back successfully ...");
+        console.log(successCode);
+        addNumbersPromise(50,'abc');
+    }
+).then(
+    (successCode) => {
+        console.log("Second promise came back successfully ...");
+        console.log(successCode);
+    }
+).catch (
+   (errorCode) => console.log ("error -> ",errorCode)
+);
