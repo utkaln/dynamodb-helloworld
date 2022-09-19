@@ -62,10 +62,19 @@ const express = require('express');
 - **Scale up** can happen on demand anytime
 - **Scale down** can only happen max. 4 times a day
 - 1 partition supports upto **1000 WCUs** or **3000 RCUs**
-- 1 partition can store up to **50 GB** of data
+- 1 partition can store up to **10 GB** of data
 - With more data requirement or througput requirement than 1 partition, DynamoDB will get more partitions, but the partition won't go away if the data size or throughput requirement comes down
 - It distributes the RCU and WCU needs evenly on all available partitions
 - Hence while planning it is important to go gradually up instead of coming to a requirement of going down
+
+
+## Index, Partition Key, Sort Key
+- **Partition Key** : Mandatory, It is a hashkey. Using a hash function DynamoDB internally decides what partition to send to. Must be a scalar type data. 
+- **Sort Key**: Not mandatory, but to make sure that the data can be queried, it must be either part of Partition key or part of sort key
+- **Simple Index** - Only uses partition key, must be unique partition key for this to work
+- **Composite Index** - Combination of partition key and sort key. Typical case. Combination should be unique
+- **Local Secondary Index** - Another column that is queried over is included alongside the Partition key. Must be created during creation of database. Does not create data replica. Supports eventual consistency and strong consistency.
+- **Global Secondary Index** - Secondary partition and secondary sort key together create global secondary index. Creates replica of data. Can be created after DB creation. Only supports Eventual Consistency
 
 
 
