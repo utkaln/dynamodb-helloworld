@@ -23,60 +23,10 @@ const express = require('express');
 ```
 
 # DynamoDB
-- Usually a single table suffices all the needs for the project. Hence a good idea would be separate tables based on environments, such as `DEV.TABLE_NAME`, `TEST.TABLE_NAME` etc. 
-- Tables names must be unique within a region name.
-
-## Data Types Supported in DynamoDB
-- **Scalar** : `String`, `Number`, `Boolean`. This type data can be used as Partition key, Sort key or Index
-- Partition key must be less than 2KB, Sort key must be less than 1KB
-- **Map** : Unordered list of objects of same type. Can not have duplicate values
-- **List** : Ordered list of objects, can be of any type data, can have duplicate values. Similar to JSON array
-- **Map** : Unordered list of key value pairs, can have any type data. Similar to hashmap
-
-## Consistency of Data
-- DynamoDB maintains 3 different copies internally, with near realtime replication (< 1s)
-- Eventually consistency is 50% cheaper than strong consistency
-- Default choice is eventual consistency. Strong consistency can be achieved by on demand
-
-## Throughput and Scaling 
-- **1 capacity unit** (cu) = 1 request / second
-- Calculation is done for Read Capacity Unit (RCU) or Write Capacity Unit (WCU). These are the major factors for budgeting. Though storage has cost too
-- Important to consider scaling based on RCU and WCU
-- **RCU**
-  - 1 Strong Consistent Read Request / second
-  - 2 Eventual Consistent Read Request / second
-  - Can read upto 4 KB data / second
-  - Example: 
-    - Avg Item Size : 10 KB
-    - Provisioned Capacity: 10 RCU 
-    - Strong Consistency Throughput: 10 * 4 = 40 KB / second
-    - Eventual Consistency Throughput: 10 * 2 * 4 = 80 KB / second
-- **WCU**
-  - 1 Write Request / second
-  - Can write upto 1 KB data / second
-  - Example: 
-    - Avg Item Size : 10 KB
-    - Provisioned Capacity: 10 WCU
-    - Write Througput: 10 * 1 = 10 KB / second
-- DynamoDB provides burst capacity upto 300 seconds of unused capacity, this is used occassionally
-- **Scale up** can happen on demand anytime
-- **Scale down** can only happen max. 4 times a day
-- 1 partition supports upto **1000 WCUs** or **3000 RCUs**
-- 1 partition can store up to **10 GB** of data
-- With more data requirement or througput requirement than 1 partition, DynamoDB will get more partitions, but the partition won't go away if the data size or throughput requirement comes down
-- It distributes the RCU and WCU needs evenly on all available partitions
-- Hence while planning it is important to go gradually up instead of coming to a requirement of going down
-
-
-## Index, Partition Key, Sort Key
-- **Partition Key** : Mandatory, It is a hashkey. Using a hash function DynamoDB internally decides what partition to send to. Must be a scalar type data. 
-- **Sort Key**: Not mandatory, but to make sure that the data can be queried, it must be either part of Partition key or part of sort key
-- **Simple Index** - Only uses partition key, must be unique partition key for this to work
-- **Composite Index** - Combination of partition key and sort key. Typical case. Combination should be unique
-- **Local Secondary Index** - Another column that is queried over is included alongside the Partition key. Must be created during creation of database. Does not create data replica. Supports eventual consistency and strong consistency.
-- **Global Secondary Index** - Secondary partition and secondary sort key together create global secondary index. Creates replica of data. Can be created after DB creation. Only supports Eventual Consistency
+- To work at a table level use `AWS.DynamoDB`
+- To work at an item level use `AWS.DynamoDB.DocumentClient` [SDK Link](https://docs.aws.amazon.com/AWSJavaScriptSDK/latest/AWS/DynamoDB/DocumentClient.html)
 
 
 
-
+[Read WIKI](https://github.com/utkaln/dynamodb-helloworld/wiki/DynamoDB)
 
